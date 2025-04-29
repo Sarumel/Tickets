@@ -54,7 +54,7 @@ function App() {
 
   const estaDentroDoExpediente = () => {
     const hora = new Date().getHours();
-    return hora >= 7 && hora < 17;
+    return hora >= 7 && hora < 17;  ////timer de limite - hora
   };
 
   const gerarSenha = (tipo) => {
