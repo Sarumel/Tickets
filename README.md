@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+# Sistema de Controle de Atendimento
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 📋 Descrição do Projeto
 
-## Available Scripts
+O sistema foi desenvolvido para gerenciar filas de atendimento em laboratórios médicos, utilizando emissão e controle de senhas. A aplicação organiza a ordem dos atendimentos com base em tipos de prioridade e garante um fluxo eficiente de clientes durante o horário de expediente.
 
-In the project directory, you can run:
+🕖 **Horário de Funcionamento:**  
+O sistema opera exclusivamente das **07h00 às 17h00**.  
+Fora desse horário, a emissão e o atendimento de senhas são bloqueados automaticamente.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 | Funcionalidades Principais
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Emissão de senhas por tipo de atendimento:
+  - **SP**: Senha Prioritária
+  - **SG**: Senha Geral
+  - **SE**: Senha para Retirada de Exames
+ 
+- Chamada de senhas em ordem de prioridade controlada:
+  - Alternância obrigatória entre SP e SG/SE.
+    
+- Gerenciamento de atendimento:
+  - Todos os guichês podem atender qualquer tipo de senha.
+    
+- Controle de tempo médio (TM) de atendimento específico por tipo de senha.
+- Descarte automático de senhas não atendidas (**aproximadamente 5%**).
+  
+- Geração de relatórios diários e mensais:
+  - Senhas emitidas e atendidas (geral e por prioridade).
+  - Tempo médio de atendimento detalhado.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ⚙️ | Regras de Funcionamento
 
-### `npm run build`
+- O sistema **só permite emissão e atendimento entre 07h00 e 17h00**.
+- Após 17h00, senhas não atendidas são descartadas.
+- Numeração de senha no padrão: `YYMMDD-PPSQ`
+  - **YY**: Ano (2 dígitos)
+  - **MM**: Mês (2 dígitos)
+  - **DD**: Dia (2 dígitos)
+  - **PP**: Tipo de senha
+  - **SQ**: Sequência diária
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Exibição no painel:
+  - Apenas as **últimas 5 senhas chamadas** são exibidas.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🧩 | Agentes do Sistema
 
-### `npm run eject`
+- **AS (Agente Sistema)**: Emite senhas e gerencia comandos.
+- **AA (Agente Atendente)**: Chama próxima senha e realiza atendimento.
+- **AC (Agente Cliente)**: Solicita senha no totem e aguarda ser chamado.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🛠️ | Tecnologias Utilizadas
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- **Banco de Dados**: MySQL 8.0
+- **Frontend**: React
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 📊 | Relatórios Gerados
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Quantidade geral de senhas emitidas.
+- Quantidade geral de senhas atendidas.
+- Quantidade de senhas por prioridade (emitidas e atendidas).
+- Relatório detalhado:
+  - Numeração da senha
+  - Tipo de senha
+  - Data/hora de emissão
+  - Data/hora de atendimento
+  - Guichê de atendimento (caso aplicável)
+- Relatório de variação do Tempo Médio (TM) de atendimento.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## ⚡ | Observações Importantes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- A cada atendimento, é alternada a prioridade da senha chamada.
+- Atendimento prioriza: **SP > SE > SG**.
+- Tempo de atendimento possui variações aleatórias dependendo do tipo de senha.
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> Desenvolvido por **Ana Beatriz, Samuel Alexandre** - UNINASSAU - 2025.
