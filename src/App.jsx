@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import Relatorio from './Relatorio';
 
+// Componentes internos
 function Totem({ gerarSenha }) {
   return (
     <div>
@@ -17,9 +20,7 @@ function Painel({ ultimasSenhas }) {
       <h2>Últimas 5 Senhas:</h2>
       <ul>
         {ultimasSenhas.map((s, i) => (
-          <li key={i}>
-            {s.numero} - Guichê {s.guiche}
-          </li>
+          <li key={i}>{s.numero} - Guichê {s.guiche}</li>
         ))}
       </ul>
     </div>
@@ -36,7 +37,7 @@ function Atendente({ chamarProxima, senhaAtual, finalizarAtendimento }) {
   );
 }
 
-function App() {
+function Home() {
   const [filaSP, setFilaSP] = useState([]);
   const [filaSE, setFilaSE] = useState([]);
   const [filaSG, setFilaSG] = useState([]);
@@ -45,7 +46,8 @@ function App() {
   const [guicheAtual, setGuicheAtual] = useState(1);
   const [ordem, setOrdem] = useState('SP');
   const [senhas, setSenhas] = useState([]);
-  const [contadorPorDia, setContadorPorDia] = useState({}); // formato: { 'YYMMDDSP': 1, ... }
+  const [contadorPorDia, setContadorPorDia] = useState({});
+  const navigate = useNavigate();
 
   const hojeYYMMDD = () => {
     const now = new Date();
@@ -54,7 +56,7 @@ function App() {
 
   const estaDentroDoExpediente = () => {
     const hora = new Date().getHours();
-    return hora >= 7 && hora < 17;  ////timer de limite - hora
+    return hora >= 7 && hora < 17;
   };
 
   const gerarSenha = (tipo) => {
@@ -141,15 +143,10 @@ function App() {
   const gerarRelatorio = (tipo) => {
     const hoje = new Date();
     const isHoje = (data) =>
-      data &&
-      data.getDate() === hoje.getDate() &&
-      data.getMonth() === hoje.getMonth() &&
-      data.getFullYear() === hoje.getFullYear();
+      data && data.getDate() === hoje.getDate() && data.getMonth() === hoje.getMonth() && data.getFullYear() === hoje.getFullYear();
 
     const isMes = (data) =>
-      data &&
-      data.getMonth() === hoje.getMonth() &&
-      data.getFullYear() === hoje.getFullYear();
+      data && data.getMonth() === hoje.getMonth() && data.getFullYear() === hoje.getFullYear();
 
     const filtro = tipo === 'diario' ? isHoje : isMes;
 
@@ -162,15 +159,11 @@ function App() {
       porTipo: ['SP', 'SE', 'SG'].map((tipo) => ({
         tipo,
         emitidas: emitidas.filter((s) => s.tipo === tipo).length,
-        atendidas: atendidas.filter((s) => s.tipo === tipo).length
+        atendidas: atendidas.filter((s) => s.tipo === tipo && s.atendidaEm !== null).length
       }))
     };
 
-    console.log(`📊 Relatório ${tipo.toUpperCase()}:`, resumo);
-
-    emitidas.forEach((s) => {
-      console.log(`${s.numero} | Tipo: ${s.tipo} | Emitida: ${s.emitidaEm.toLocaleString()} | Atendida: ${s.atendidaEm ? s.atendidaEm.toLocaleString() : ''} | Guichê: ${s.guiche || ''}`);
-    });
+    navigate('/relatorio', { state: { tipo, dados: resumo } });
   };
 
   return (
@@ -187,7 +180,7 @@ function App() {
         <h2>Atendente</h2>
         <Atendente
           chamarProxima={chamarProxima}
-          senhaAtual={senhaAtual} 
+          senhaAtual={senhaAtual}
           finalizarAtendimento={finalizarAtendimento}
         />
       </div>
@@ -197,6 +190,18 @@ function App() {
         <button onClick={() => gerarRelatorio('mensal')}>Relatório Mensal</button>
       </div>
     </div>
+  );
+}
+
+// Define as rotas aqui
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/relatorio" element={<Relatorio />} />
+      </Routes>
+    </Router>
   );
 }
 
